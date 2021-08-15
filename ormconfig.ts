@@ -16,9 +16,10 @@ let sqliteConnectionConfig: SqliteConnectionOptions = {
     username: 'root',
     password: '',
     database: 'nestjs-basic-crud-mysql',
-    entities: ['dist/src/**/entities/*.entity{.js,.ts}','dist/src/**/*.entity{.js,.ts}'],
+    entities: ['dist/src/modules/**/entities/*.entity{.js,.ts}',],
     synchronize: true,
     migrations:['dist/src/db/migrations/*{.js,.ts}'],
+    logging:true,
     cli: {
       migrationsDir: "src/db/migrations",
       // entitiesDir: "entity",
