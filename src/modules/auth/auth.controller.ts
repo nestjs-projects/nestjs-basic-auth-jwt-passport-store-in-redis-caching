@@ -47,7 +47,7 @@ export class AuthController {
       
       //access_token: this.jwtService.sign(payload),
       await this.cacheManager.set('jwt', jwt, { ttl: 1000 });
-      console.log("mon cache : "+ await this.cacheManager.set('jwt', jwt));
+      //console.log("mon cache : "+ await this.cacheManager.set('jwt', jwt));
       
       // response.cookie('jwt', jwt, {httpOnly:true, 
       //   expires: new Date(Date.now() + 60000),// would expire after 1 minutes
@@ -63,7 +63,7 @@ export class AuthController {
       try {
        // const cookieApp = request.cookies['jwt'];
         const cookieApp = await this.cacheManager.get('jwt');
-        console.log("cache recuperé:  " + cookieApp);
+        //console.log("cache recuperé de redis:  " + cookieApp);
         
         if (!cookieApp) {
           throw new BadRequestException('JWT not found');
@@ -84,7 +84,7 @@ export class AuthController {
     async logout(@Res({ passthrough: true }) response : Response){
       //response.clearCookie('jwt');
       await this.cacheManager.del('key');
-      console.log("cache supprimé  :" +await this.cacheManager.del('key'));
+      //console.log("cache supprimé  :" +await this.cacheManager.del('key'));
       
       return {
         message:"Success logout !"
