@@ -1,15 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode,HttpStatus , ValidationPipe, UsePipes, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode,HttpStatus , ValidationPipe, UsePipes, Res, ParseIntPipe } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiBody, ApiCreatedResponse, ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Response } from 'express';
+import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiHeader, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 
 @ApiHeader({
   name: 'X-MyHeader',
   description: 'Custom header',
 })
+//@ApiBearerAuth()
 @ApiTags('users')
 @Controller('users')
 //@Controller({ host: ':account.example.com' })
@@ -17,6 +17,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
+  @ApiOperation({ summary: 'Create user' })
   //@ApiResponse({ status: 201, description: 'The record has been successfully created.'})
   @ApiCreatedResponse()
   @ApiResponse({ status: 403, description: 'Forbidden.'})
@@ -34,17 +35,17 @@ export class UsersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', new ParseIntPipe()) id: string) {
     return this.usersService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  update(@Param('id', new ParseIntPipe()) id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(+id, updateUserDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id', new ParseIntPipe()) id: string) {
     return this.usersService.remove(+id);
   }
 

@@ -22,7 +22,11 @@ export class AuthService {
       /** Login service */
       async login(loginUserDto: LoginUserDto) : Promise<User | any> {
         try {
-          return await this.repository.findOne({username:loginUserDto.username}); // check user by username
+          let user = await this.repository.findOne({username:loginUserDto.username}); // check user by username
+          if (!user) {
+            return null;
+          }
+          return user;
         } catch (error) {
           throw error;
         }
